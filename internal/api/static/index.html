@@ -1,0 +1,451 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ReliefLink</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#f4f2ed; --panel:#fffefb; --ink:#1b1c1a; --muted:#6c6b65; --faint:#9a988f; --line:#e2dfd6; --chip:#eeebe3;
+  --accent:#1f5f5b; --accent-soft:#dcebe8; --accent-ink:#fff;
+  --crit:#b3261e; --crit-soft:#f9dedb; --high:#c2570c; --high-soft:#fbe6d4; --watch:#9a7b0a; --watch-soft:#f6edc8;
+  --ok:#2e7d4f; --ok-soft:#dcefe2;
+  --sans:'IBM Plex Sans', system-ui, sans-serif; --mono:'IBM Plex Mono', ui-monospace, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root { --bg:#121312; --panel:#1a1c1b; --ink:#ebeae4; --muted:#a2a199; --faint:#74736c; --line:#2b2d2b; --chip:#232524;
+          --accent:#6fc2b8; --accent-soft:#1d3532; --accent-ink:#0b1d1b;
+          --crit:#f2867c; --crit-soft:#3a1d1a; --high:#f0a36b; --high-soft:#3a2617; --watch:#e0c55a; --watch-soft:#332c12;
+          --ok:#7fcc9b; --ok-soft:#18301f; }
+}
+* { box-sizing:border-box; }
+body { margin:0; background:var(--bg); color:var(--ink); font:14px/1.45 var(--sans); }
+button, input, select, textarea { font:inherit; color:inherit; }
+.mono { font-family:var(--mono); }
+.muted { color:var(--muted); }
+
+header { display:flex; align-items:center; gap:16px; padding:18px 28px; border-bottom:1px solid var(--line); background:var(--panel); flex-wrap:wrap; }
+.brand { display:flex; align-items:center; gap:10px; }
+.brand svg { width:28px; height:28px; }
+.brand h1 { font-size:18px; margin:0; letter-spacing:-.01em; }
+.brand p { margin:0; font-size:12px; color:var(--muted); }
+.spacer { flex:1; }
+.live { display:flex; align-items:center; gap:8px; font-size:12px; color:var(--muted); }
+.dot { width:8px; height:8px; border-radius:50%; background:var(--faint); }
+.dot.on { background:var(--ok); box-shadow:0 0 0 0 var(--ok); animation:pulse 2s infinite; }
+@keyframes pulse { 0% { box-shadow:0 0 0 0 color-mix(in srgb, var(--ok) 60%, transparent); } 70% { box-shadow:0 0 0 7px transparent; } 100% { box-shadow:0 0 0 0 transparent; } }
+
+.kpis { display:grid; grid-template-columns:repeat(6, minmax(0,1fr)); gap:1px; background:var(--line); border-bottom:1px solid var(--line); }
+.kpi { background:var(--panel); padding:14px 28px; }
+.kpi b { display:block; font-size:26px; font-weight:600; font-variant-numeric:tabular-nums; letter-spacing:-.02em; }
+.kpi span { font-size:12px; color:var(--muted); }
+.kpi.alert b { color:var(--crit); }
+@media (max-width:900px) { .kpis { grid-template-columns:repeat(3, minmax(0,1fr)); } .kpi { padding:12px 16px; } header { padding:14px 16px; } }
+
+main { padding:20px 28px 40px; display:grid; gap:20px; grid-template-columns:minmax(0,1fr) 400px; }
+@media (max-width:1150px) { main { grid-template-columns:1fr; } }
+@media (max-width:760px) { .hide-sm { display:none; } .two { grid-template-columns:1fr !important; } }
+@media (max-width:900px) { main { padding:16px; } }
+.stack { display:flex; flex-direction:column; gap:20px; min-width:0; }
+.panel { background:var(--panel); border:1px solid var(--line); border-radius:12px; min-width:0; }
+.panel > h2 { margin:0; padding:14px 18px; font-size:13px; font-weight:600; display:flex; align-items:center; gap:8px; border-bottom:1px solid var(--line); }
+.panel > h2 small { font-weight:400; color:var(--muted); }
+.panel > h2 .spacer { flex:1; }
+.pad { padding:14px 18px; }
+
+/* Shelter cards */
+.grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(250px, 1fr)); gap:12px; padding:14px; }
+.card { border:1px solid var(--line); border-radius:10px; padding:12px 14px; background:var(--bg); display:flex; flex-direction:column; gap:8px; transition:border-color .2s; cursor:pointer; }
+.card:hover { border-color:var(--accent); }
+.card.flash { animation:flash 1.4s ease-out; }
+@keyframes flash { from { background:var(--accent-soft); } to { background:var(--bg); } }
+.card-head { display:flex; justify-content:space-between; gap:8px; align-items:flex-start; }
+.card h3 { margin:0; font-size:14px; font-weight:600; line-height:1.3; }
+.card .region { font-size:12px; color:var(--muted); }
+.bar { height:6px; background:var(--chip); border-radius:3px; overflow:hidden; }
+.bar i { display:block; height:100%; background:var(--accent); border-radius:3px; transition:width .4s; }
+.bar.full i { background:var(--crit); } .bar.near i { background:var(--high); }
+.row { display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
+.between { justify-content:space-between; }
+.num { font-variant-numeric:tabular-nums; }
+.tag { font-size:11px; padding:2px 7px; border-radius:99px; background:var(--chip); color:var(--muted); white-space:nowrap; }
+.sev { font-size:11px; font-weight:600; padding:2px 8px; border-radius:99px; white-space:nowrap; }
+.sev.critical { background:var(--crit-soft); color:var(--crit); } .sev.high { background:var(--high-soft); color:var(--high); }
+.sev.watch { background:var(--watch-soft); color:var(--watch); } .sev.ok { background:var(--ok-soft); color:var(--ok); }
+.sev.low, .sev.normal { background:var(--chip); color:var(--muted); }
+.supply { font-size:12px; }
+.supply b { font-variant-numeric:tabular-nums; }
+.stepper { display:flex; gap:4px; }
+.stepper button { padding:3px 8px; font-size:12px; }
+.btn { border:1px solid var(--line); background:var(--panel); border-radius:7px; padding:6px 11px; cursor:pointer; }
+.btn:hover { border-color:var(--faint); }
+.btn.primary { background:var(--accent); color:var(--accent-ink); border-color:var(--accent); }
+.btn.ghost { background:transparent; }
+.btn:disabled { opacity:.5; cursor:default; }
+.hub { border-style:dashed; }
+
+/* Lists */
+.list { list-style:none; margin:0; padding:0; }
+.list > li { padding:12px 18px; border-bottom:1px solid var(--line); display:flex; flex-direction:column; gap:6px; }
+.list > li:last-child { border-bottom:0; }
+.list .title { font-weight:500; }
+.empty { padding:18px; color:var(--muted); font-size:13px; }
+.scroll { max-height:420px; overflow:auto; }
+
+.feed li { flex-direction:row !important; gap:10px !important; padding:8px 18px !important; font-size:12.5px; align-items:baseline; }
+.feed time { font-family:var(--mono); font-size:11px; color:var(--faint); flex:none; }
+.feed .who { font-family:var(--mono); font-size:11px; color:var(--accent); flex:none; }
+.feed li.new { animation:flash 1.6s ease-out; }
+
+table { width:100%; border-collapse:collapse; font-size:13px; }
+th, td { text-align:left; padding:8px 12px; border-bottom:1px solid var(--line); vertical-align:top; }
+th { font-size:11px; font-weight:600; color:var(--muted); text-transform:uppercase; letter-spacing:.04em; }
+td.n, th.n { text-align:right; font-variant-numeric:tabular-nums; }
+.wrap { overflow-x:auto; }
+
+.gap-bar { display:grid; grid-template-columns:110px 1fr 40px; gap:10px; align-items:center; padding:5px 18px; font-size:12.5px; }
+.gap-bar .bar { height:8px; }
+
+/* Console */
+.console-note { display:flex; gap:10px; align-items:flex-start; padding:12px 18px; background:var(--accent-soft); font-size:13px; border-bottom:1px solid var(--line); }
+.chips { display:flex; gap:6px; flex-wrap:wrap; padding:12px 18px 0; }
+.chip { border:1px solid var(--line); background:var(--bg); border-radius:99px; padding:4px 10px; font-size:12px; cursor:pointer; }
+.chip.blocked { border-style:dashed; color:var(--crit); }
+textarea { width:100%; min-height:110px; border:1px solid var(--line); border-radius:8px; background:var(--bg); padding:10px 12px; font-family:var(--mono); font-size:13px; resize:vertical; }
+.result { padding:0 18px 16px; }
+.result .wrap { max-height:340px; overflow:auto; border:1px solid var(--line); border-radius:8px; }
+.result td { font-family:var(--mono); font-size:12px; white-space:nowrap; }
+.err-box { border:1px solid var(--crit); background:var(--crit-soft); color:var(--crit); border-radius:8px; padding:10px 12px; font-size:13px; }
+.err-box code { font-family:var(--mono); }
+
+/* Drawer */
+.scrim { position:fixed; inset:0; background:rgba(0,0,0,.35); display:none; z-index:20; }
+.drawer { position:fixed; top:0; right:0; bottom:0; width:min(480px, 100%); background:var(--panel); border-left:1px solid var(--line); z-index:21; transform:translateX(100%); transition:transform .25s ease; display:flex; flex-direction:column; }
+.drawer.open { transform:none; } .scrim.open { display:block; }
+.drawer header { padding:16px 18px; }
+.drawer .body { overflow:auto; padding:0 0 20px; }
+.drawer h4 { margin:16px 18px 8px; font-size:12px; color:var(--muted); text-transform:uppercase; letter-spacing:.05em; }
+.kv { display:grid; grid-template-columns:repeat(3, 1fr); gap:10px; padding:0 18px; }
+.kv div { background:var(--bg); border-radius:8px; padding:8px 10px; }
+.kv b { display:block; font-size:18px; }
+.kv span { font-size:11px; color:var(--muted); }
+
+/* Toast */
+.toasts { position:fixed; bottom:20px; left:50%; transform:translateX(-50%); display:flex; flex-direction:column; gap:8px; z-index:30; width:min(520px, calc(100% - 32px)); }
+.toast { background:var(--ink); color:var(--bg); border-radius:10px; padding:11px 14px; font-size:13px; box-shadow:0 6px 24px rgba(0,0,0,.18); animation:in .2s ease-out; }
+.toast.bad { background:var(--crit); color:#fff; }
+.toast small { display:block; opacity:.8; font-family:var(--mono); font-size:11px; margin-top:2px; }
+@keyframes in { from { opacity:0; transform:translateY(8px); } }
+select, input[type=number] { border:1px solid var(--line); background:var(--bg); border-radius:7px; padding:6px 8px; min-width:0; }
+</style>
+</head>
+<body>
+<header>
+  <div class="brand">
+    <svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="8" fill="var(--accent)"/><path d="M16 7v18M7 16h18" stroke="var(--accent-ink)" stroke-width="4" stroke-linecap="round"/></svg>
+    <div><h1>ReliefLink</h1><p>Cedar Valley emergency operations · wildfire &amp; heat evacuation (demo data)</p></div>
+  </div>
+  <div class="spacer"></div>
+  <div class="live"><span class="dot" id="dot"></span><span id="live-label">connecting…</span></div>
+</header>
+
+<section class="kpis">
+  <div class="kpi"><b id="k-people">–</b><span>people sheltered</span></div>
+  <div class="kpi"><b id="k-beds">–</b><span>beds free</span></div>
+  <div class="kpi alert"><b id="k-crit">–</b><span>critical shortages</span></div>
+  <div class="kpi"><b id="k-req">–</b><span>open requests</span></div>
+  <div class="kpi"><b id="k-vol">–</b><span>volunteers on shift</span></div>
+  <div class="kpi"><b id="k-ship">–</b><span>shipments, 24 h</span></div>
+</section>
+
+<main>
+  <div class="stack">
+    <section class="panel">
+      <h2>Shelters <small>sorted by most urgent supply</small><span class="spacer"></span><small class="hide-sm">click a shelter for volunteers</small></h2>
+      <div class="grid" id="shelters"></div>
+    </section>
+
+    <section class="panel">
+      <h2>Analyst console <small>runs as <span class="mono">relief_analyst</span></small></h2>
+      <div class="console-note">
+        <span>🔒</span>
+        <span>This connection uses a read-only PostgreSQL role that can only see the <span class="mono">reporting</span> schema. Try a blocked query: PostgreSQL itself refuses it, not the app.</span>
+      </div>
+      <div class="chips" id="examples"></div>
+      <div class="pad">
+        <textarea id="sql" spellcheck="false">SELECT shelter, item, days_of_supply, severity
+FROM reporting.critical_shortages
+LIMIT 10;</textarea>
+        <div class="row" style="margin-top:8px"><button class="btn primary" id="run">Run query</button><span class="muted" id="sql-meta" style="font-size:12px"></span></div>
+      </div>
+      <div class="result" id="sql-result"></div>
+    </section>
+
+    <div style="display:grid; grid-template-columns:minmax(0,1.3fr) minmax(0,1fr); gap:20px" class="two">
+      <section class="panel">
+        <h2>Regions <small>materialized view, refreshed on load</small></h2>
+        <div class="wrap"><table id="regions"></table></div>
+      </section>
+      <section class="panel">
+        <h2>Skill coverage <small>available volunteers per shelter in need</small></h2>
+        <div id="gaps" style="padding:8px 0"></div>
+      </section>
+    </div>
+  </div>
+
+  <div class="stack">
+    <section class="panel">
+      <h2>Needs attention <small>&lt; 1.5 days of supply</small></h2>
+      <ul class="list scroll" id="shortages"></ul>
+    </section>
+    <section class="panel">
+      <h2>Open requests<span class="spacer"></span><button class="btn ghost" id="new-req-btn" style="padding:3px 9px;font-size:12px">+ New</button></h2>
+      <form id="new-req" class="pad" style="display:none; border-bottom:1px solid var(--line)">
+        <div class="row">
+          <select id="nr-shelter" style="flex:2"></select>
+          <select id="nr-item" style="flex:2"></select>
+        </div>
+        <div class="row" style="margin-top:8px">
+          <input type="number" id="nr-qty" min="1" placeholder="Qty" style="width:90px">
+          <select id="nr-pri"><option>normal</option><option>high</option><option>critical</option><option>low</option></select>
+          <button class="btn primary">Create</button>
+        </div>
+      </form>
+      <ul class="list scroll" id="requests"></ul>
+    </section>
+    <section class="panel">
+      <h2>Live activity <small>from the audit log via LISTEN/NOTIFY</small></h2>
+      <ul class="list feed scroll" id="activity"></ul>
+    </section>
+    <section class="panel">
+      <h2>Recent shipments</h2>
+      <ul class="list scroll" id="shipments" style="max-height:260px"></ul>
+    </section>
+  </div>
+</main>
+
+<div class="scrim" id="scrim"></div>
+<aside class="drawer" id="drawer" aria-hidden="true">
+  <header><div><h3 id="d-name" style="margin:0;font-size:16px"></h3><div class="muted" id="d-sub" style="font-size:12px"></div></div><div class="spacer"></div><button class="btn ghost" id="d-close">Close</button></header>
+  <div class="body">
+    <div class="kv" id="d-kv"></div>
+    <h4>Best-matched volunteers</h4>
+    <ul class="list" id="d-matches"></ul>
+  </div>
+</aside>
+<div class="toasts" id="toasts"></div>
+
+<script>
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const fmt = n => Number(n).toLocaleString();
+const ago = t => { const s = (Date.now() - new Date(t)) / 1000; return s < 60 ? 'now' : s < 3600 ? Math.floor(s/60)+'m' : s < 86400 ? Math.floor(s/3600)+'h' : Math.floor(s/86400)+'d'; };
+const clock = t => new Date(t).toLocaleTimeString([], {hour:'2-digit', minute:'2-digit', second:'2-digit'});
+const sevFor = d => d == null ? 'ok' : d < .5 ? 'critical' : d < 1 ? 'high' : d < 1.5 ? 'watch' : 'ok';
+const label = s => s.replace(/_/g,' ');
+
+async function api(method, path, body) {
+  const r = await fetch(path, {method, headers:{'Content-Type':'application/json'}, body: body ? JSON.stringify(body) : undefined});
+  const data = await r.json().catch(() => ({}));
+  if (!r.ok) { const e = new Error(data.error || r.statusText); Object.assign(e, data); throw e; }
+  return data;
+}
+function toast(msg, err) {
+  const t = document.createElement('div');
+  t.className = 'toast' + (err ? ' bad' : '');
+  t.innerHTML = esc(msg) + (err && (err.constraint || err.sqlstate) ? `<small>Rejected by PostgreSQL · ${err.constraint ? 'constraint ' + esc(err.constraint) : ''} SQLSTATE ${esc(err.sqlstate)}</small>` : '');
+  $('#toasts').appendChild(t);
+  setTimeout(() => t.remove(), err ? 6000 : 3500);
+}
+async function act(fn, ok) {
+  try { const r = await fn(); if (ok) toast(typeof ok === 'function' ? ok(r) : ok); }
+  catch (e) { toast(e.message, e); }
+}
+
+let shelters = [], items = [];
+
+async function loadTotals() {
+  const t = await api('GET', '/api/totals');
+  $('#k-people').textContent = fmt(t.people_sheltered); $('#k-beds').textContent = fmt(t.beds_free);
+  $('#k-crit').textContent = t.critical_shortages; $('#k-req').textContent = t.open_requests;
+  $('#k-vol').textContent = t.volunteers_on_shift; $('#k-ship').textContent = t.shipments_24h;
+}
+
+async function loadShelters(flashId) {
+  shelters = await api('GET', '/api/shelters');
+  $('#shelters').innerHTML = shelters.map(s => {
+    if (s.is_hub) return `<div class="card hub" data-id="${s.id}">
+      <div class="card-head"><div><h3>${esc(s.name)}</h3><div class="region">${esc(s.region)} · supply hub</div></div><span class="tag">hub</span></div>
+      <div class="supply muted">${fmt(s.units_in_stock)} units in stock</div></div>`;
+    const pct = s.occupancy_pct, cls = pct >= 98 ? 'full' : pct >= 90 ? 'near' : '';
+    const sev = sevFor(s.lowest_days);
+    return `<div class="card ${s.id === flashId ? 'flash' : ''}" data-id="${s.id}">
+      <div class="card-head"><div><h3>${esc(s.name)}</h3><div class="region">${esc(s.region)}</div></div>
+        ${s.critical_requests ? `<span class="sev critical">${s.critical_requests} critical</span>` : s.open_requests ? `<span class="tag">${s.open_requests} open</span>` : ''}</div>
+      <div><div class="row between" style="font-size:12px"><span class="num"><b>${fmt(s.occupancy)}</b> / ${fmt(s.capacity)}</span><span class="muted">${s.beds_free} beds free</span></div>
+        <div class="bar ${cls}"><i style="width:${Math.min(100,pct)}%"></i></div></div>
+      <div class="row between supply">${s.occupancy === 0 ? '<span class="muted">No one checked in yet</span><span class="sev ok">ready</span>' : `<span>${esc(s.lowest_item)}: <b>${s.lowest_days}</b> days</span>
+        <span class="sev ${sev}">${sev === 'ok' ? 'stocked' : sev}</span>`}</div>
+      <div class="row between">
+        <div class="row" style="gap:4px">${s.accessible ? '<span class="tag">♿</span>' : ''}${s.pets_allowed ? '<span class="tag">pets</span>' : ''}${s.languages.filter(l => l !== 'en').map(l => `<span class="tag">${l}</span>`).join('')}</div>
+        <div class="stepper" title="Check people in or out"><button class="btn" data-occ="-10">−10</button><button class="btn" data-occ="10">+10</button></div>
+      </div></div>`;
+  }).join('');
+  if (!$('#nr-shelter').options.length) {
+    $('#nr-shelter').innerHTML = shelters.filter(s => !s.is_hub).map(s => `<option value="${s.id}">${esc(s.name)}</option>`).join('');
+  }
+}
+
+$('#shelters').addEventListener('click', e => {
+  const card = e.target.closest('.card'); if (!card) return;
+  const id = +card.dataset.id, b = e.target.closest('[data-occ]');
+  if (b) { e.stopPropagation(); const d = +b.dataset.occ;
+    return act(() => api('POST', `/api/shelters/${id}/occupancy`, {delta:d}), r => `${r.name}: ${d > 0 ? 'checked in' : 'checked out'} ${Math.abs(d)} · ${r.occupancy}/${r.capacity}`); }
+  openDrawer(id);
+});
+
+async function loadShortages() {
+  const rows = await api('GET', '/api/shortages');
+  $('#shortages').innerHTML = rows.length ? rows.map(r => `<li>
+    <div class="row between"><span class="title">${esc(r.item)}</span><span class="sev ${r.severity}">${r.days_of_supply} days</span></div>
+    <div class="muted" style="font-size:12.5px">${esc(r.shelter)} · ${fmt(r.on_hand)} on hand, needs ${fmt(r.daily_need)}/day</div>
+    <div class="row between"><span style="font-size:12px" class="muted">3-day shortfall: <b class="num">${fmt(r.shortfall_3d)}</b></span>
+      ${r.request_open ? '<span class="tag">request open</span>' : `<button class="btn" data-short='${JSON.stringify({shelter_id:r.shelter_id,item_id:r.item_id,quantity:r.shortfall_3d,priority:r.severity==='watch'?'normal':r.severity})}'>Request 3-day supply</button>`}</div>
+  </li>`).join('') : '<li class="empty">No shelter is below 1.5 days of any essential.</li>';
+}
+$('#shortages').addEventListener('click', e => {
+  const b = e.target.closest('[data-short]'); if (!b) return;
+  const body = JSON.parse(b.dataset.short); body.note = 'Auto: bring to 3 days of supply';
+  b.disabled = true;
+  act(() => api('POST', '/api/requests', body), r => `Request #${r.id} opened: ${fmt(r.quantity)} × ${r.item} for ${r.shelter}`);
+});
+
+async function loadRequests() {
+  const rows = await api('GET', '/api/requests');
+  $('#requests').innerHTML = rows.length ? rows.map(r => `<li>
+    <div class="row between"><span class="title">${fmt(r.quantity)} × ${esc(r.item)}</span><span class="sev ${r.priority}">${r.priority}</span></div>
+    <div class="muted" style="font-size:12.5px">#${r.id} · ${esc(r.shelter)} · ${ago(r.created_at)} ago${r.note ? ' · ' + esc(r.note) : ''}</div>
+    <div class="row between"><span style="font-size:12px" class="${r.hub_stock >= r.quantity ? 'muted' : ''}" ${r.hub_stock < r.quantity ? 'style="color:var(--crit)"' : ''}>hubs hold ${fmt(r.hub_stock)}</span>
+      <span class="row" style="gap:6px"><button class="btn ghost" data-cancel="${r.id}">Cancel</button><button class="btn primary" data-fill="${r.id}">Dispatch</button></span></div>
+  </li>`).join('') : '<li class="empty">No open requests.</li>';
+}
+$('#requests').addEventListener('click', e => {
+  const f = e.target.closest('[data-fill]'), c = e.target.closest('[data-cancel]');
+  if (f) { f.disabled = true; act(() => api('POST', `/api/requests/${f.dataset.fill}/fulfill`), s => `Dispatched ${fmt(s.quantity)} × ${s.item} from ${s.from_hub} → ${s.to_shelter} (${s.distance_km} km)`).finally(() => f.disabled = false); }
+  if (c) act(() => api('POST', `/api/requests/${c.dataset.cancel}/cancel`), 'Request cancelled');
+});
+$('#new-req-btn').onclick = () => { const f = $('#new-req'); f.style.display = f.style.display === 'none' ? 'block' : 'none'; };
+$('#new-req').addEventListener('submit', e => {
+  e.preventDefault();
+  act(() => api('POST', '/api/requests', {shelter_id:+$('#nr-shelter').value, item_id:+$('#nr-item').value, quantity:+$('#nr-qty').value, priority:$('#nr-pri').value}),
+      r => `Request #${r.id} opened`);
+});
+
+async function loadShipments() {
+  const rows = await api('GET', '/api/shipments');
+  $('#shipments').innerHTML = rows.length ? rows.map(s => `<li>
+    <div class="row between"><span class="title">${fmt(s.quantity)} × ${esc(s.item)}</span><span class="muted" style="font-size:12px">${ago(s.shipped_at)} ago</span></div>
+    <div class="muted" style="font-size:12.5px">${esc(s.from_hub)} → ${esc(s.to_shelter)} · ${s.distance_km} km</div></li>`).join('') : '<li class="empty">Nothing dispatched yet. Press Dispatch on a request.</li>';
+}
+
+async function loadActivity() {
+  const rows = await api('GET', '/api/activity');
+  $('#activity').innerHTML = rows.map(a => `<li><time>${clock(a.changed_at)}</time><span class="who">${esc(a.actor)}</span><span>${esc(a.summary)}</span></li>`).join('') || '<li class="empty">No changes yet.</li>';
+}
+
+async function loadRegions() {
+  const rows = await api('GET', '/api/regions');
+  $('#regions').innerHTML = `<tr><th>Region</th><th class="n">Shelters</th><th class="n">People</th><th class="n">% full</th><th class="n">Requests</th><th class="n">Volunteers</th></tr>` +
+    rows.map(r => `<tr><td>${esc(r.region)}</td><td class="n">${r.open_shelters}</td><td class="n">${fmt(r.people_sheltered)}</td>
+      <td class="n">${r.capacity ? Math.round(100*r.people_sheltered/r.capacity) : 0}%</td><td class="n">${r.open_requests}</td><td class="n">${r.volunteers_available}</td></tr>`).join('');
+}
+
+async function loadGaps() {
+  const rows = await api('GET', '/api/skill-gaps');
+  const max = Math.max(...rows.map(r => +r.volunteers_per_shelter), 1);
+  $('#gaps').innerHTML = rows.map(r => `<div class="gap-bar"><span>${label(r.skill)}</span>
+    <div class="bar ${r.volunteers_per_shelter < 2 ? 'near' : ''}"><i style="width:${100*r.volunteers_per_shelter/max}%"></i></div>
+    <span class="num muted" style="text-align:right">${r.volunteers_per_shelter}</span></div>`).join('');
+}
+
+async function openDrawer(id) {
+  const s = shelters.find(x => x.id === id); if (!s) return;
+  $('#d-name').textContent = s.name;
+  $('#d-sub').textContent = `${s.region} · ${s.address}`;
+  $('#d-kv').innerHTML = `<div><b>${s.occupancy_pct}%</b><span>full</span></div><div><b>${s.volunteers_on_shift}</b><span>on shift now</span></div><div><b>${s.open_requests}</b><span>open requests</span></div>`;
+  $('#drawer').classList.add('open'); $('#scrim').classList.add('open');
+  $('#d-matches').innerHTML = '<li class="empty">Matching…</li>';
+  const m = await api('GET', `/api/shelters/${id}/matches`);
+  $('#d-matches').innerHTML = (s.needed_skills.length ? `<li><div class="row" style="gap:4px;font-size:12.5px"><span class="muted">Needs</span> ${s.needed_skills.map(k => `<span class="tag">${label(k)}</span>`).join('')}<span class="muted">· speaks ${s.languages.join(', ')}</span></div></li>` : '') +
+    (m.length ? m.map(v => `<li>
+      <div class="row between"><span class="title">${esc(v.full_name)}</span><span class="tag">score ${v.score}</span></div>
+      <div class="row" style="gap:4px">${v.matched_skills.map(k => `<span class="sev ok">${label(k)}</span>`).join('')}${v.shared_languages.filter(l => l !== 'en').map(l => `<span class="tag">${l}</span>`).join('')}${v.same_region ? '<span class="tag">local</span>' : ''}</div>
+      <div class="row between"><span class="muted" style="font-size:12px">${v.busy_now ? 'on a shift right now' : 'available'}</span>
+        <button class="btn" data-book='${JSON.stringify({volunteer_id:v.volunteer_id, shelter_id:id, skill:v.matched_skills[0]})}'>Book next 4 h</button></div></li>`).join('')
+    : '<li class="empty">No available volunteer has the skills this shelter needs.</li>');
+}
+$('#d-matches').addEventListener('click', e => {
+  const b = e.target.closest('[data-book]'); if (!b) return;
+  act(() => api('POST', '/api/shifts', JSON.parse(b.dataset.book)), r => `Shift booked: ${new Date(r.starts_at).toLocaleTimeString([], {hour:'numeric'})}–${new Date(r.ends_at).toLocaleTimeString([], {hour:'numeric'})}`);
+});
+const closeDrawer = () => { $('#drawer').classList.remove('open'); $('#scrim').classList.remove('open'); };
+$('#d-close').onclick = closeDrawer; $('#scrim').onclick = closeDrawer;
+document.addEventListener('keydown', e => e.key === 'Escape' && closeDrawer());
+
+/* Console */
+async function runSQL() {
+  $('#sql-meta').textContent = 'running…';
+  try {
+    const r = await api('POST', '/api/sql', {query: $('#sql').value});
+    $('#sql-meta').textContent = `${r.rows.length}${r.truncated ? '+' : ''} rows · ${r.ms} ms`;
+    $('#sql-result').innerHTML = r.columns.length ? `<div class="wrap"><table><tr>${r.columns.map(c => `<th>${esc(c)}</th>`).join('')}</tr>${
+      r.rows.map(row => `<tr>${row.map(v => `<td>${v === null ? '<span class="muted">null</span>' : esc(v)}</td>`).join('')}</tr>`).join('')}</table></div>` : '';
+  } catch (e) {
+    $('#sql-meta').textContent = '';
+    $('#sql-result').innerHTML = `<div class="err-box"><b>${esc(e.message)}</b>${e.sqlstate ? ` <code>SQLSTATE ${esc(e.sqlstate)}</code>` : ''}${e.hint ? `<div>${esc(e.hint)}</div>` : ''}</div>`;
+  }
+}
+$('#run').onclick = runSQL;
+$('#sql').addEventListener('keydown', e => { if ((e.metaKey || e.ctrlKey) && e.key === 'Enter') runSQL(); });
+api('GET', '/api/sql/examples').then(ex => {
+  $('#examples').innerHTML = ex.map((x, i) => `<button class="chip ${x.label.startsWith('Blocked') ? 'blocked' : ''}" data-ex="${i}">${esc(x.label)}</button>`).join('');
+  $('#examples').onclick = e => { const b = e.target.closest('[data-ex]'); if (b) { $('#sql').value = ex[b.dataset.ex].query; runSQL(); } };
+});
+
+/* Live updates: every DB change arrives via LISTEN/NOTIFY → SSE */
+let pending = new Set(), timer;
+const loaders = {totals:loadTotals, shelters:loadShelters, shortages:loadShortages, requests:loadRequests, shipments:loadShipments, activity:loadActivity, regions:loadRegions, gaps:loadGaps};
+function schedule(...keys) { keys.forEach(k => pending.add(k)); clearTimeout(timer); timer = setTimeout(flush, 150); }
+async function flush() { const keys = [...pending]; pending.clear(); await Promise.all(keys.map(k => loaders[k]().catch(() => {}))); }
+const affects = {
+  'core.shelters': ['totals','shelters','shortages','regions'],
+  'ops.inventory': ['shelters','shortages','totals'],
+  'ops.requests':  ['requests','shortages','shelters','totals','regions'],
+  'ops.shipments': ['shipments','totals'],
+  'ops.shifts':    ['shelters','totals'],
+};
+function connect() {
+  const es = new EventSource('/api/stream');
+  es.onopen = () => { $('#dot').classList.add('on'); $('#live-label').textContent = 'live'; };
+  es.onerror = () => { $('#dot').classList.remove('on'); $('#live-label').textContent = 'reconnecting…'; };
+  es.onmessage = m => {
+    const ev = JSON.parse(m.data);
+    if (ev.table === '_reconnected') return schedule(...Object.keys(loaders));
+    schedule('activity', ...(affects[ev.table] || []));
+    if (ev.table === 'core.shelters') setTimeout(() => document.querySelector(`.card[data-id="${ev.row.id}"]`)?.classList.add('flash'), 300);
+  };
+}
+
+(async () => {
+  items = await api('GET', '/api/items');
+  $('#nr-item').innerHTML = items.map(i => `<option value="${i.id}">${esc(i.name)}</option>`).join('');
+  Object.keys(loaders).forEach(k => pending.add(k));
+  await flush();
+  runSQL();
+  connect();
+})();
+</script>
+</body>
+</html>

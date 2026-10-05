@@ -1,0 +1,13 @@
+sku,name,category,unit,daily_need_per_person
+WAT-001,Bottled water (1 L),water,bottle,4.0
+FOD-001,Ready-to-eat meal,food,meal,3.0
+MED-003,Electrolyte sachet,medical,sachet,1.0
+HYG-001,Hygiene kit,hygiene,kit,0.2
+BAB-001,Diapers (pack of 30),baby,pack,0.03
+BAB-002,Infant formula (can),baby,can,0.02
+MED-001,First aid kit,medical,kit,0.01
+PWR-001,Power bank,power,unit,0.05
+BED-001,Cot,bedding,cot,0
+BED-002,Blanket,bedding,blanket,0
+MED-002,Insulin cooler pack,medical,pack,0
+FOD-002,Pet food (2 kg bag),food,bag,0

@@ -1,0 +1,33 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Start PostgreSQL (Docker)",
+      "type": "process",
+      "command": "powershell.exe",
+      "args": [
+        "-NoProfile", "-ExecutionPolicy", "Bypass", "-Command",
+        "$names = docker ps -a --format '{{.Names}}'; if ($LASTEXITCODE -ne 0) { Write-Host 'Docker is not running. Open Docker Desktop and try again.'; exit 1 }; if ($names -contains 'relief-pg') { docker start relief-pg | Out-Null } else { Write-Host 'Creating PostgreSQL container (first time downloads it)...'; docker run -d --name relief-pg -e POSTGRES_PASSWORD=postgres -p 5432:5432 postgres:16 | Out-Null }; for ($i = 0; $i -lt 60; $i++) { docker exec relief-pg pg_isready -U postgres -h localhost *> $null; if ($LASTEXITCODE -eq 0) { Write-Host 'PostgreSQL is ready.'; exit 0 }; Start-Sleep -Seconds 1 }; Write-Host 'PostgreSQL did not start in time.'; exit 1"
+      ],
+      "problemMatcher": [],
+      "presentation": { "reveal": "always", "panel": "shared" }
+    },
+    {
+      "label": "Stop PostgreSQL (Docker)",
+      "type": "process",
+      "command": "docker",
+      "args": ["stop", "relief-pg"],
+      "problemMatcher": []
+    },
+    {
+      "label": "Run tests",
+      "type": "process",
+      "command": "go",
+      "args": ["test", "./..."],
+      "options": { "env": { "RELIEFLINK_TEST_DSN": "postgres://postgres:postgres@localhost:5432/postgres?sslmode=disable" } },
+      "group": { "kind": "test", "isDefault": true },
+      "dependsOn": "Start PostgreSQL (Docker)",
+      "problemMatcher": ["$go"]
+    }
+  ]
+}

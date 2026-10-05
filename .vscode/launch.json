@@ -1,0 +1,38 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "ReliefLink: first-time setup",
+      "type": "go",
+      "request": "launch",
+      "mode": "auto",
+      "program": "${workspaceFolder}/cmd/relieflink",
+      "cwd": "${workspaceFolder}",
+      "args": ["setup"],
+      "env": { "PGHOST": "localhost", "PGPORT": "5432", "PGUSER": "postgres", "PGPASSWORD": "postgres" },
+      "preLaunchTask": "Start PostgreSQL (Docker)"
+    },
+    {
+      "name": "ReliefLink: run",
+      "type": "go",
+      "request": "launch",
+      "mode": "auto",
+      "program": "${workspaceFolder}/cmd/relieflink",
+      "cwd": "${workspaceFolder}",
+      "args": ["serve", "-addr", ":8080"],
+      "env": { "PGHOST": "localhost", "PGPORT": "5432" },
+      "preLaunchTask": "Start PostgreSQL (Docker)"
+    },
+    {
+      "name": "ReliefLink: reset demo data",
+      "type": "go",
+      "request": "launch",
+      "mode": "auto",
+      "program": "${workspaceFolder}/cmd/relieflink",
+      "cwd": "${workspaceFolder}",
+      "args": ["setup", "-reset"],
+      "env": { "PGHOST": "localhost", "PGPORT": "5432", "PGUSER": "postgres", "PGPASSWORD": "postgres" },
+      "preLaunchTask": "Start PostgreSQL (Docker)"
+    }
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "Servers": {
+    "1": {
+      "Name": "ReliefLink (admin)",
+      "Group": "ReliefLink",
+      "Host": "db",
+      "Port": 5432,
+      "MaintenanceDB": "relieflink",
+      "Username": "postgres",
+      "SSLMode": "prefer"
+    },
+    "2": {
+      "Name": "ReliefLink (analyst, read-only)",
+      "Group": "ReliefLink",
+      "Host": "db",
+      "Port": 5432,
+      "MaintenanceDB": "relieflink",
+      "Username": "relief_analyst",
+      "SSLMode": "prefer"
+    }
+  }
+}

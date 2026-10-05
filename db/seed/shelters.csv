@@ -1,0 +1,16 @@
+name,region,address,latitude,longitude,is_hub,capacity,occupancy,accessible,pets_allowed,languages,needed_skills,phone
+Lincoln High School Gym,North Valley,1200 Lincoln Ave,40.241,-105.012,false,350,312,true,false,"{en,es}","{first_aid,cooking,translation}",+1 555-201-0101
+Northgate Community Center,North Valley,88 Northgate Rd,40.265,-104.983,false,180,96,true,true,{en},"{pet_care,cooking}",+1 555-201-0102
+St. Brigid Parish Hall,North Valley,450 Elm St,40.228,-105.041,false,120,118,false,false,"{en,vi}","{nursing,translation,childcare}",+1 555-201-0103
+Riverside Fairgrounds Pavilion,Riverside,3 Fairground Way,40.172,-104.931,false,600,544,true,true,"{en,es,tl}","{first_aid,logistics,security,pet_care}",+1 555-202-0201
+Riverside Middle School,Riverside,710 River Rd,40.158,-104.962,false,220,141,true,false,"{en,es}","{childcare,cooking,mental_health}",+1 555-202-0202
+Harbor Light Mission,Riverside,19 Dock St,40.149,-104.915,false,90,87,false,false,"{en,zh}","{nursing,translation}",+1 555-202-0203
+Old Town Library Annex,Old Town,5 Market Sq,40.192,-105.095,false,80,34,true,false,"{en,ar}","{translation,mental_health}",+1 555-203-0301
+Civic Arena Concourse,Old Town,1 Arena Plaza,40.199,-105.078,false,800,655,true,false,"{en,es,ar,ko}","{first_aid,nursing,security,logistics,translation}",+1 555-203-0302
+Grace Temple Hall,Old Town,62 Chapel Ln,40.185,-105.105,false,140,0,true,true,"{en,ko}",{cooking},+1 555-203-0303
+Foothills Recreation Center,Foothills,900 Ridge Dr,40.121,-105.182,false,260,251,true,true,"{en,es}","{first_aid,pet_care,mental_health}",+1 555-204-0401
+Pine Ridge Elementary,Foothills,34 Pine Ridge Rd,40.105,-105.211,false,160,73,true,false,{en},"{childcare,cooking}",+1 555-204-0402
+Canyon Creek Lodge,Foothills,2 Canyon Creek Rd,40.088,-105.239,false,110,104,false,true,"{en,es}","{first_aid,driving}",+1 555-204-0403
+North Distribution Hub,North Valley,5000 Industrial Pkwy,40.28,-104.95,true,0,0,true,false,{en},"{logistics,driving}",+1 555-299-0001
+Central Warehouse,Old Town,220 Rail Yard Rd,40.18,-105.03,true,0,0,true,false,{en},"{logistics,driving}",+1 555-299-0002
+South Depot,Foothills,77 Quarry Rd,40.11,-105.13,true,0,0,true,false,{en},"{logistics,driving}",+1 555-299-0003

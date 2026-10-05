@@ -1,0 +1,181 @@
+shelter,sku,quantity
+Lincoln High School Gym,WAT-001,499
+Lincoln High School Gym,FOD-001,2066
+Lincoln High School Gym,MED-003,218
+Lincoln High School Gym,HYG-001,125
+Lincoln High School Gym,BAB-001,30
+Lincoln High School Gym,BAB-002,17
+Lincoln High School Gym,MED-001,6
+Lincoln High School Gym,PWR-001,49
+Lincoln High School Gym,BED-001,2
+Lincoln High School Gym,BED-002,5
+Lincoln High School Gym,MED-002,27
+Lincoln High School Gym,FOD-002,26
+Northgate Community Center,WAT-001,764
+Northgate Community Center,FOD-001,589
+Northgate Community Center,MED-003,283
+Northgate Community Center,HYG-001,77
+Northgate Community Center,BAB-001,6
+Northgate Community Center,BAB-002,5
+Northgate Community Center,MED-001,3
+Northgate Community Center,PWR-001,21
+Northgate Community Center,BED-001,36
+Northgate Community Center,BED-002,37
+Northgate Community Center,MED-002,25
+Northgate Community Center,FOD-002,3
+St. Brigid Parish Hall,WAT-001,2094
+St. Brigid Parish Hall,FOD-001,682
+St. Brigid Parish Hall,MED-003,486
+St. Brigid Parish Hall,HYG-001,61
+St. Brigid Parish Hall,BAB-001,8
+St. Brigid Parish Hall,BAB-002,5
+St. Brigid Parish Hall,MED-001,3
+St. Brigid Parish Hall,PWR-001,24
+St. Brigid Parish Hall,BED-001,11
+St. Brigid Parish Hall,BED-002,6
+St. Brigid Parish Hall,MED-002,37
+St. Brigid Parish Hall,FOD-002,36
+Riverside Fairgrounds Pavilion,WAT-001,2611
+Riverside Fairgrounds Pavilion,FOD-001,1306
+Riverside Fairgrounds Pavilion,MED-003,1784
+Riverside Fairgrounds Pavilion,HYG-001,214
+Riverside Fairgrounds Pavilion,BAB-001,32
+Riverside Fairgrounds Pavilion,BAB-002,26
+Riverside Fairgrounds Pavilion,MED-001,20
+Riverside Fairgrounds Pavilion,PWR-001,80
+Riverside Fairgrounds Pavilion,BED-001,20
+Riverside Fairgrounds Pavilion,BED-002,29
+Riverside Fairgrounds Pavilion,MED-002,37
+Riverside Fairgrounds Pavilion,FOD-002,29
+Riverside Middle School,WAT-001,1566
+Riverside Middle School,FOD-001,1045
+Riverside Middle School,MED-003,322
+Riverside Middle School,HYG-001,110
+Riverside Middle School,BAB-001,9
+Riverside Middle School,BAB-002,7
+Riverside Middle School,MED-001,4
+Riverside Middle School,PWR-001,19
+Riverside Middle School,BED-001,28
+Riverside Middle School,BED-002,18
+Riverside Middle School,MED-002,38
+Riverside Middle School,FOD-002,4
+Harbor Light Mission,WAT-001,737
+Harbor Light Mission,FOD-001,764
+Harbor Light Mission,MED-003,334
+Harbor Light Mission,HYG-001,38
+Harbor Light Mission,BAB-001,1
+Harbor Light Mission,BAB-002,3
+Harbor Light Mission,MED-001,3
+Harbor Light Mission,PWR-001,17
+Harbor Light Mission,BED-001,36
+Harbor Light Mission,BED-002,20
+Harbor Light Mission,MED-002,21
+Harbor Light Mission,FOD-002,22
+Old Town Library Annex,WAT-001,463
+Old Town Library Annex,FOD-001,343
+Old Town Library Annex,MED-003,103
+Old Town Library Annex,HYG-001,28
+Old Town Library Annex,BAB-001,4
+Old Town Library Annex,BAB-002,2
+Old Town Library Annex,MED-001,1
+Old Town Library Annex,PWR-001,3
+Old Town Library Annex,BED-001,19
+Old Town Library Annex,BED-002,36
+Old Town Library Annex,MED-002,28
+Old Town Library Annex,FOD-002,18
+Civic Arena Concourse,WAT-001,2358
+Civic Arena Concourse,FOD-001,8243
+Civic Arena Concourse,MED-003,1793
+Civic Arena Concourse,HYG-001,79
+Civic Arena Concourse,BAB-001,54
+Civic Arena Concourse,BAB-002,45
+Civic Arena Concourse,MED-001,21
+Civic Arena Concourse,PWR-001,78
+Civic Arena Concourse,BED-001,18
+Civic Arena Concourse,BED-002,8
+Civic Arena Concourse,MED-002,15
+Civic Arena Concourse,FOD-002,25
+Grace Temple Hall,WAT-001,0
+Grace Temple Hall,FOD-001,0
+Grace Temple Hall,MED-003,0
+Grace Temple Hall,HYG-001,0
+Grace Temple Hall,BAB-001,0
+Grace Temple Hall,BAB-002,0
+Grace Temple Hall,MED-001,0
+Grace Temple Hall,PWR-001,0
+Grace Temple Hall,BED-001,25
+Grace Temple Hall,BED-002,31
+Grace Temple Hall,MED-002,5
+Grace Temple Hall,FOD-002,10
+Foothills Recreation Center,WAT-001,3025
+Foothills Recreation Center,FOD-001,828
+Foothills Recreation Center,MED-003,50
+Foothills Recreation Center,HYG-001,201
+Foothills Recreation Center,BAB-001,31
+Foothills Recreation Center,BAB-002,13
+Foothills Recreation Center,MED-001,7
+Foothills Recreation Center,PWR-001,35
+Foothills Recreation Center,BED-001,24
+Foothills Recreation Center,BED-002,14
+Foothills Recreation Center,MED-002,9
+Foothills Recreation Center,FOD-002,5
+Pine Ridge Elementary,WAT-001,665
+Pine Ridge Elementary,FOD-001,531
+Pine Ridge Elementary,MED-003,177
+Pine Ridge Elementary,HYG-001,45
+Pine Ridge Elementary,BAB-001,7
+Pine Ridge Elementary,BAB-002,4
+Pine Ridge Elementary,MED-001,1
+Pine Ridge Elementary,PWR-001,11
+Pine Ridge Elementary,BED-001,23
+Pine Ridge Elementary,BED-002,39
+Pine Ridge Elementary,MED-002,36
+Pine Ridge Elementary,FOD-002,20
+Canyon Creek Lodge,WAT-001,208
+Canyon Creek Lodge,FOD-001,1143
+Canyon Creek Lodge,MED-003,332
+Canyon Creek Lodge,HYG-001,72
+Canyon Creek Lodge,BAB-001,11
+Canyon Creek Lodge,BAB-002,4
+Canyon Creek Lodge,MED-001,4
+Canyon Creek Lodge,PWR-001,20
+Canyon Creek Lodge,BED-001,35
+Canyon Creek Lodge,BED-002,25
+Canyon Creek Lodge,MED-002,25
+Canyon Creek Lodge,FOD-002,25
+North Distribution Hub,WAT-001,12000
+North Distribution Hub,FOD-001,8000
+North Distribution Hub,MED-003,0
+North Distribution Hub,HYG-001,900
+North Distribution Hub,BAB-001,150
+North Distribution Hub,BAB-002,120
+North Distribution Hub,MED-001,200
+North Distribution Hub,PWR-001,300
+North Distribution Hub,BED-001,400
+North Distribution Hub,BED-002,1200
+North Distribution Hub,MED-002,60
+North Distribution Hub,FOD-002,250
+Central Warehouse,WAT-001,12000
+Central Warehouse,FOD-001,8000
+Central Warehouse,MED-003,3000
+Central Warehouse,HYG-001,900
+Central Warehouse,BAB-001,150
+Central Warehouse,BAB-002,120
+Central Warehouse,MED-001,200
+Central Warehouse,PWR-001,300
+Central Warehouse,BED-001,400
+Central Warehouse,BED-002,1200
+Central Warehouse,MED-002,60
+Central Warehouse,FOD-002,250
+South Depot,WAT-001,4000
+South Depot,FOD-001,2666
+South Depot,MED-003,1000
+South Depot,HYG-001,300
+South Depot,BAB-001,50
+South Depot,BAB-002,40
+South Depot,MED-001,66
+South Depot,PWR-001,100
+South Depot,BED-001,133
+South Depot,BED-002,400
+South Depot,MED-002,20
+South Depot,FOD-002,83
